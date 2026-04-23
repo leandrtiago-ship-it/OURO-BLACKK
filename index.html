@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ouro Black | Chocolates Premium</title>
+    <style>
+        /* --- Variáveis e Reset --- */
+        :root {
+            --black: #050505;
+            --dark-brown: #1a110a;
+            --chocolate: #2b1408;
+            --gold: #d4af37;
+            --light-gold: #f3e5ab;
+            --white: #f8f8f8;
+            --transition-slow: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-fast: all 0.3s ease;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: var(--black); color: var(--white); overflow-x: hidden; }
+        h1, h2, h3, .serif { font-family: 'Playfair Display', 'Georgia', serif; font-weight: 400; }
+
+        /* --- Loader Ouro Black --- */
+        .loader {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-color: var(--black); z-index: 9999;
+            display: flex; justify-content: center; align-items: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+        .loader img { width: 150px; animation: pulseGlow 2s infinite alternate; }
+        .loader.hidden { opacity: 0; visibility: hidden; }
+
+        @keyframes pulseGlow {
+            0% { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.2)); transform: scale(1); }
+            100% { filter: drop-shadow(0 0 30px rgba(212, 175, 55, 0.8)); transform: scale(1.05); }
+        }
+
+        /* --- Navegação --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; position: fixed; width: 100%; top: 0; z-index: 1000;
+            transition: var(--transition-slow);
+        }
+        nav.scrolled { background-color: rgba(5, 5, 5, 0.9); backdrop-filter: blur(15px); padding: 10px 5%; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .nav-logo img { height: 60px; transition: var(--transition-fast); }
+        nav.scrolled .nav-logo img { height: 45px; }
+        .nav-links { display: flex; gap: 30px; align-items: center; }
+        .nav-links a { color: var(--white); text-decoration: none; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 2px; position: relative; transition: var(--transition-fast); }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 1px; bottom: -5px; left: 0; background-color: var(--gold); transition: var(--transition-fast); }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover::after { width: 100%; }
+        
+        /* Botão Carrinho */
+        .cart-btn { background: none; border: 1px solid var(--gold); color: var(--gold); padding: 8px 20px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition-fast); }
+        .cart-btn:hover { background: var(--gold); color: var(--black); box-shadow: 0 0 15px rgba(212, 175, 55, 0.6); }
+
+        /* --- Hero Section com Vídeo --- */
+        .hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; overflow: hidden; }
+        .hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: -2; }
+        .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(0,0,0,0.4), rgba(5,5,5,1)); z-index: -1; }
+        .hero-content { z-index: 1; transform: translateY(30px); opacity: 0; animation: fadeInUp 1.5s forwards 0.5s; }
+        .hero h1 { font-size: 5rem; color: var(--gold); margin-bottom: 20px; text-shadow: 0 10px 30px rgba(0,0,0,0.9); }
+        .hero p { font-size: 1.3rem; color: var(--light-gold); letter-spacing: 2px; margin-bottom: 40px; }
+
+        @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Botão Premium --- */
+        .btn { display: inline-block; padding: 15px 45px; background: transparent; color: var(--gold); border: 1px solid var(--gold); text-decoration: none; text-transform: uppercase; letter-spacing: 3px; position: relative; overflow: hidden; transition: var(--transition-fast); z-index: 1; cursor: pointer; }
+        .btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background-color: var(--gold); transition: var(--transition-fast); z-index: -1; }
+        .btn:hover::before { left: 0; }
+        .btn:hover { color: var(--black); font-weight: bold; box-shadow: 0 0 30px rgba(212, 175, 55, 0.5); }
+
+        /* --- Parallax da Loja --- */
+        .store-parallax {
+            height: 80vh; background-image: url('image_0a9ebc.jpg'); background-attachment: fixed; background-position: center; background-size: cover; background-repeat: no-repeat;
+            display: flex; align-items: center; justify-content: center; position: relative;
+        }
+        .store-parallax::after { content: ''; position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); }
+        .parallax-text { position: relative; z-index: 1; text-align: center; max-width: 800px; padding: 40px; background: rgba(5,5,5,0.7); border: 1px solid rgba(212, 175, 55, 0.3); backdrop-filter: blur(10px); }
+        .parallax-text h2 { font-size: 3rem; color: var(--gold); margin-bottom: 20px; }
+        .parallax-text p { font-size: 1.1rem; line-height: 1.8; color: #ddd; }
+
+        /* --- Filtros --- */
+        .filters { text-align: center; padding: 60px 20px 20px; }
+        .filter-btn { background: none; border: none; color: #888; font-size: 1rem; margin: 0 15px; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: var(--transition-fast); }
+        .filter-btn.active, .filter-btn:hover { color: var(--gold); }
+
+        /* --- Catálogo de Produtos --- */
+        .products { padding: 40px 5% 100px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        .product-card { background: #0a0a0a; border: 1px solid #222; text-align: center; overflow: hidden; position: relative; cursor: pointer; transition: var(--transition-slow); }
+        .product-img-container { overflow: hidden; height: 350px; }
+        .product-img-container img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; filter: brightness(0.8); }
+        
+        /* Efeito de Hover Dramático no Produto */
+        .product-card:hover { border-color: var(--gold); box-shadow: 0 20px 50px rgba(212, 175, 55, 0.15); transform: translateY(-10px); }
+        .product-card:hover .product-img-container img { transform: scale(1.15); filter: brightness(1.1); }
+        
+        .product-info { padding: 30px; position: relative; z-index: 2; background: linear-gradient(to top, #0a0a0a 80%, transparent); margin-top: -50px; }
+        .product-info h3 { font-size: 1.5rem; margin-bottom: 10px; color: var(--white); }
+        .product-info p { color: var(--gold); font-size: 1.2rem; margin-bottom: 20px; }
+        .add-to-cart { width: 100%; padding: 12px; background: transparent; border: 1px solid var(--gold); color: var(--gold); text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: var(--transition-fast); }
+        .product-card:hover .add-to-cart { background: var(--gold); color: var(--black); }
+
+        /* --- Seção de Vídeo em Destaque --- */
+        .video-showcase { display: flex; align-items: center; background: var(--dark-brown); padding: 0; }
+        .video-showcase video { width: 50%; height: 70vh; object-fit: cover; }
+        .video-text { width: 50%; padding: 5%; text-align: left; }
+        .video-text h2 { font-size: 3rem; color: var(--gold); margin-bottom: 20px; }
+        .video-text p { font-size: 1.1rem; line-height: 1.8; color: #ccc; margin-bottom: 30px; }
+
+        /* --- Carrinho Lateral (Offcanvas) --- */
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.8); z-index: 1001; opacity: 0; visibility: hidden; transition: var(--transition-fast); }
+        .cart-overlay.active { opacity: 1; visibility: visible; }
+        .cart-panel { position: fixed; top: 0; right: -400px; width: 400px; height: 100vh; background: var(--black); border-left: 1px solid var(--gold); z-index: 1002; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); display: flex; flex-direction: column; padding: 30px; }
+        .cart-panel.active { transform: translateX(-400px); }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 20px; margin-bottom: 20px; }
+        .cart-header h2 { color: var(--gold); font-size: 1.5rem; }
+        .close-cart { background: none; border: none; color: var(--white); font-size: 2rem; cursor: pointer; transition: color 0.3s; }
+        .close-cart:hover { color: var(--gold); }
+        .cart-body { flex-grow: 1; color: #888; text-align: center; display: flex; align-items: center; justify-content: center; font-style: italic; }
+        .cart-footer { border-top: 1px solid #333; padding-top: 20px; }
+        .cart-total { display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 1.2rem; }
+        .checkout-btn { width: 100%; padding: 15px; background: var(--gold); color: var(--black); border: none; font-size: 1rem; text-transform: uppercase; letter-spacing: 2px; font-weight: bold; cursor: pointer; transition: var(--transition-fast); }
+        .checkout-btn:hover { box-shadow: 0 0 20px rgba(212, 175, 55, 0.5); transform: scale(1.02); }
+
+        /* --- Scroll Reveal Classes --- */
+        .reveal { opacity: 0; transform: translateY(80px); transition: var(--transition-slow); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Footer */
+        footer { text-align: center; padding: 40px; border-top: 1px solid #222; color: #555; }
+        footer span { color: var(--gold); }
+
+        @media (max-width: 768px) {
+            .video-showcase { flex-direction: column; }
+            .video-showcase video, .video-text { width: 100%; }
+            .hero h1 { font-size: 3rem; }
+            .nav-links { display: none; /* Em um projeto real, faríamos um menu hamburguer aqui */ }
+            .cart-panel { width: 100%; right: -100%; }
+            .cart-panel.active { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loader" id="loader">
+        <img src="WhatsApp Image 2026-04-23 at 14.14.14.png" alt="Ouro Black Loading">
+    </div>
+
+    <nav id="navbar">
+        <a href="#" class="nav-logo">
+            <img src="WhatsApp Image 2026-04-23 at 14.14.14.png" alt="Ouro Black Logo">
+        </a>
+        <div class="nav-links">
+            <a href="#inicio">Início</a>
+            <a href="#loja">A Loja</a>
+            <a href="#produtos">Produtos</a>
+        </div>
+        <button class="cart-btn" id="openCart">Carrinho (0)</button>
+    </nav>
+
+    <header class="hero" id="inicio">
+        <video class="hero-video" autoplay loop muted playsinline>
+            <source src="C:\Users\leand\Downloads\Vídeo_de_Bombom_Gourmet_Sofisticado.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="serif">Ouro Black</h1>
+            <p>EXPERIMENTE O LUXO DO CHOCOLATE</p>
+            <a href="#produtos" class="btn">Explorar Coleção</a>
+        </div>
+    </header>
+
+    <section class="store-parallax" id="loja">
+        <div class="parallax-text reveal">
+            <h2 class="serif">Uma Experiência Sensorial Única</h2>
+            <p>Nossa boutique foi desenhada para refletir a preciosidade de cada ingrediente. Com um ambiente luxuoso e convidativo, cada visita à Ouro Black é uma imersão no universo do cacau de origem, onde a tradição artesanal encontra a sofisticação contemporânea.</p>
+        </div>
+    </section>
+
+    <section class="filters reveal" id="produtos">
+        <button class="filter-btn active">Todos</button>
+        <button class="filter-btn">Bombons</button>
+        <button class="filter-btn">Barras Premium</button>
+        <button class="filter-btn">Sem Açúcar</button>
+    </section>
+
+    <section class="products">
+        <div class="product-grid">
+            <div class="product-card reveal">
+                <div class="product-img-container">
+                    <img src="imagebarra2.png" alt="Bombom Clássico OB">
+                </div>
+                <div class="product-info">
+                    <h3 class="serif">Bombom Clássico OB</h3>
+                    <p>R$ 30,00</p>
+                    <button class="add-to-cart">Adicionar</button>
+                </div>
+            </div>
+            
+            <div class="product-card reveal" style="transition-delay: 0.2s;">
+                <div class="product-img-container">
+                    <img src="imagebarra1.png" alt="Barra Premium 75% Cacau">
+                </div>
+                <div class="product-info">
+                    <h3 class="serif">Barra Premium Dark</h3>
+                    <p>R$ 67,00</p>
+                    <button class="add-to-cart">Adicionar</button>
+                </div>
+            </div>
+
+            <div class="product-card reveal" style="transition-delay: 0.4s;">
+                <div class="product-img-container">
+                    <img src="imagebarra3.png" alt="Bombom Folhas de Ouro">
+                </div>
+                <div class="product-info">
+                    <h3 class="serif">Bombom Folhas de Ouro</h3>
+                    <p>R$ 52,00</p>
+                    <button class="add-to-cart">Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="video-showcase reveal">
+        <video autoplay loop muted playsinline>
+            <source src="C:\Users\leand\Downloads\Whisk_gzyyewn1ijn3czm00imhzjytytojrtl0q2yi1cn (2).mp4" type="video/mp4">
+        </video>
+        <div class="video-text">
+            <h2 class="serif">A Quebra Perfeita</h2>
+            <p>O som do autêntico chocolate premium. O "snap" característico de nossas barras é a prova do tempero perfeito da manteiga de cacau. Descubra texturas que derretem suavemente, liberando notas intensas e inesquecíveis.</p>
+            <a href="#produtos" class="btn" style="padding: 10px 30px; font-size: 0.8rem;">Ver Barras</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 <span>Ouro Black</span> Chocolates Premium. A excelência em cada detalhe.</p>
+    </footer>
+
+    <div class="cart-overlay" id="cartOverlay"></div>
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h2 class="serif">Seu Carrinho</h2>
+            <button class="close-cart" id="closeCart">&times;</button>
+        </div>
+        <div class="cart-body">
+            Seu carrinho está vazio no momento.<br>Descubra nossos chocolates.
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Subtotal:</span>
+                <span>R$ 0,00</span>
+            </div>
+            <button class="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <script>
+        // Remover Loader ao carregar
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loader').classList.add('hidden');
+            }, 1000); // 1 segundo de exibição da logo pulsando
+        });
+
+        // Efeito Blur na Navbar
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) navbar.classList.add('scrolled');
+            else navbar.classList.remove('scrolled');
+        });
+
+        // Carrinho Lateral (Offcanvas)
+        const openCart = document.getElementById('openCart');
+        const closeCart = document.getElementById('closeCart');
+        const cartPanel = document.getElementById('cartPanel');
+        const cartOverlay = document.getElementById('cartOverlay');
+
+        function toggleCart() {
+            cartPanel.classList.toggle('active');
+            cartOverlay.classList.toggle('active');
+        }
+
+        openCart.addEventListener('click', toggleCart);
+        closeCart.addEventListener('click', toggleCart);
+        cartOverlay.addEventListener('click', toggleCart);
+
+        // Scroll Reveal Avançado
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Checar elementos visíveis no carregamento
+
+        // Microinteração: Botões de adicionar ao carrinho
+        const addButtons = document.querySelectorAll('.add-to-cart');
+        addButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.textContent = 'Adicionado ✔';
+                this.style.backgroundColor = 'var(--gold)';
+                this.style.color = 'var(--black)';
+                setTimeout(() => {
+                    this.textContent = 'Adicionar';
+                    this.style.backgroundColor = 'transparent';
+                    this.style.color = 'var(--gold)';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
